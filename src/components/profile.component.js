@@ -1,11 +1,54 @@
 import React, { Component } from "react";
 import { Redirect } from 'react-router-dom';
 import { connect } from "react-redux";
+import { validate } from "../actions/auth";
+
 
 class Profile extends Component {
 
+
+  constructor(props) {
+    super(props);
+    this.handleValidation = this.handleValidation.bind(this);
+ 
+    this.state = {
+ 
+      successful: false,
+
+    };
+  }
+
+  handleValidation(e) {
+
+    const { user: currentUser ,message } = this.props;
+
+    this.setState({
+      successful: true,
+    });
+
+    if (1) {
+
+      this.props
+      .dispatch(
+          validate(currentUser.userId.toString())
+        )
+        .then(() => {
+          this.setState({
+            successful: false,
+          });
+        })
+        .catch(() => {
+          this.setState({
+            successful: false,
+          });
+        });
+    }
+  }
+
   render() {
-    const { user: currentUser } = this.props;
+
+    const { user: currentUser ,message } = this.props;
+  
 
     if (!currentUser) {
       return <Redirect to="/login" />;
@@ -43,9 +86,10 @@ class Profile extends Component {
         <div className="form-group">
               <button
                 className="btn btn-primary btn-block"
-                disabled={/*this.state.loading*/false}
+                disabled={this.state.successful}
+                onClick={this.handleValidation}
               >
-                {/*this.state.loading*/ false && (
+                {this.state.successful && (
                   <span className="spinner-border spinner-border-sm"></span>
                 )}
                 <span>Validate</span>
@@ -63,6 +107,14 @@ class Profile extends Component {
               </button>
             </div>
 
+            {message && (
+              <div className="form-group">
+                <div className={ this.state.successful ? "alert alert-success" : "alert alert-danger" } role="alert">
+                  {message}
+                </div>
+              </div>
+            )}
+
       </div>
       
     );
@@ -71,8 +123,10 @@ class Profile extends Component {
 
 function mapStateToProps(state) {
   const { user } = state.auth;
+  const { message } = state.message;
   return {
     user,
+    message
   };
 }
 

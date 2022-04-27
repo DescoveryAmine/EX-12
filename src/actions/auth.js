@@ -9,10 +9,11 @@ import {
   SET_MESSAGE,
 } from "./types";
 
+import HomeService from "../services/home.service";
 import AuthService from "../services/auth.service";
 
 export const register = (userid,username, lastname, email, password) => (dispatch) => {
-  return AuthService.register(userid, username, lastname, email, password).then(
+  return HomeService.register(userid, username, lastname, email, password).then(
     (response) => {
       dispatch({
         type: REGISTER_SUCCESS,
@@ -48,7 +49,7 @@ export const register = (userid,username, lastname, email, password) => (dispatc
 };
 
 export const login = (userid, password) => (dispatch) => {
-  return AuthService.login(userid, password).then(
+  return HomeService.login(userid, password).then(
     (data) => {
       dispatch({
         type: LOGIN_SUCCESS,
@@ -79,8 +80,8 @@ export const login = (userid, password) => (dispatch) => {
   );
 };
 
-/*export const validate = (userid, password) => (dispatch) => {
-  return AuthService.validate(userid, password).then(
+export const validate = (userid) => (dispatch) => {
+  return AuthService.validate(userid).then(
     (data) => {
       dispatch({
         type: VALIDATION_SUCCESS,
@@ -110,9 +111,9 @@ export const login = (userid, password) => (dispatch) => {
     }
   );
 };
-*/
+
 export const logout = () => (dispatch) => {
-  AuthService.logout();
+  HomeService.logout();
 
   dispatch({
     type: LOGOUT,
