@@ -3,6 +3,8 @@ import {
   REGISTER_FAIL,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
+  VALIDATION_SUCCESS,
+  VALIDATION_FAIL,
   LOGOUT,
   SET_MESSAGE,
 } from "./types";
@@ -77,6 +79,38 @@ export const login = (userid, password) => (dispatch) => {
   );
 };
 
+/*export const validate = (userid, password) => (dispatch) => {
+  return AuthService.validate(userid, password).then(
+    (data) => {
+      dispatch({
+        type: VALIDATION_SUCCESS,
+        payload: { user: data },
+      });
+
+      return Promise.resolve();
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: VALIDATION_FAIL,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};
+*/
 export const logout = () => (dispatch) => {
   AuthService.logout();
 
@@ -84,3 +118,5 @@ export const logout = () => (dispatch) => {
     type: LOGOUT,
   });
 };
+
+
