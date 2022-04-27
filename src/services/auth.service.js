@@ -15,7 +15,15 @@ class AuthService {
   logout() {
     localStorage.removeItem("user");
   }
-
+/*
+  validate(userid, password) {
+    return axios
+      .post(API_URL + "validate", { userid, password })
+      .then((response) => {
+        return response.data;
+      });
+  }
+*/
   register(userid,name,lastname,email,password) {
     return axios.post(API_URL + "register", {
       userid,
