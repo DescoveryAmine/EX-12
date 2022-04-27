@@ -13,6 +13,14 @@ class AuthService {
       });
   }
 
+  getauth(userid) {
+    return axios
+      .post(API_URL + "getauth", {userid})
+      .then((response) => {
+        return response.data;
+      });
+  }
+
 }
 
 export default new AuthService();

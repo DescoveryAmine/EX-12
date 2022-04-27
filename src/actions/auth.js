@@ -5,6 +5,8 @@ import {
   LOGIN_FAIL,
   VALIDATION_SUCCESS,
   VALIDATION_FAIL,
+  AUTHORIZATION_SUCCESS,
+  AUTHORIZATION_FAIL,
   LOGOUT,
   SET_MESSAGE,
 } from "./types";
@@ -100,6 +102,38 @@ export const validate = (userid) => (dispatch) => {
 
       dispatch({
         type: VALIDATION_FAIL,
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};
+
+export const getauth = (userid) => (dispatch) => {
+  return AuthService.getauth(userid).then(
+    (data) => {
+      dispatch({
+        type: AUTHORIZATION_SUCCESS,
+        payload: { user: data },
+      });
+
+      return Promise.resolve();
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: AUTHORIZATION_FAIL,
       });
 
       dispatch({

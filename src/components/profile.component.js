@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Redirect } from 'react-router-dom';
 import { connect } from "react-redux";
 import { validate } from "../actions/auth";
-
+import { getauth } from "../actions/auth";
 
 class Profile extends Component {
 
@@ -10,20 +10,23 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this.handleValidation = this.handleValidation.bind(this);
- 
+    this.handleAuthorization = this.handleAuthorization.bind(this);
+
     this.state = {
  
-      successful: false,
+      IsAuthorized: false,
+      IsValidated: false,
 
     };
   }
 
   handleValidation(e) {
 
-    const { user: currentUser ,message } = this.props;
+    const { user: currentUser , message } = this.props;
 
     this.setState({
-      successful: true,
+      ...this.state,
+      IsValidated: true,
     });
 
     if (1) {
@@ -34,12 +37,44 @@ class Profile extends Component {
         )
         .then(() => {
           this.setState({
-            successful: false,
+            ...this.state,
+            IsValidated: false,
           });
         })
         .catch(() => {
           this.setState({
-            successful: false,
+            ...this.state,
+            IsValidated: false,
+          });
+        });
+    }
+  }
+  
+  handleAuthorization(e) {
+
+    const { user: currentUser} = this.props;
+
+    this.setState({
+      ...this.state,
+      IsAuthorized: true,
+    });
+   
+    if (1) {
+
+      this.props
+      .dispatch(
+          getauth(currentUser.userId.toString())
+        )
+        .then(() => {
+          this.setState({
+            ...this.state,
+            IsAuthorized: false,
+          });
+        })
+        .catch(() => {
+          this.setState({
+            ...this.state,
+            IsAuthorized: false,
           });
         });
     }
@@ -74,7 +109,7 @@ class Profile extends Component {
           <strong>Email:</strong> {currentUser.email}
         </p>
         <p>
-          <strong>validated:</strong> {currentUser.validated}
+          <strong>validated:</strong> {currentUser.validated === true ? "true" : "false"}
         </p>
         <p>
           <strong>bearer_token:</strong> {currentUser.bearer_token}
@@ -86,10 +121,10 @@ class Profile extends Component {
         <div className="form-group">
               <button
                 className="btn btn-primary btn-block"
-                disabled={this.state.successful}
+                disabled={this.state.IsValidated}
                 onClick={this.handleValidation}
               >
-                {this.state.successful && (
+                {this.state.IsValidated && (
                   <span className="spinner-border spinner-border-sm"></span>
                 )}
                 <span>Validate</span>
@@ -98,9 +133,10 @@ class Profile extends Component {
             <div className="form-group">
               <button
                 className="btn btn-primary btn-block"
-                disabled={/*this.state.loading*/false}
+                disabled={this.state.IsAuthorized}
+                onClick={this.handleAuthorization}
               >
-                {/*this.state.loading*/ false && (
+                {this.state.IsAuthorized && (
                   <span className="spinner-border spinner-border-sm"></span>
                 )}
                 <span>GetAuth</span>
