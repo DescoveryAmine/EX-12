@@ -17,6 +17,16 @@ const required = (value) => {
   }
 };
 
+const vuserid = (value) => {
+  if (value.length < 4 || value.length > 20) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        The userid must be between 4 and 20 characters.
+      </div>
+    );
+  }
+};
+
 const email = (value) => {
   if (!isEmail(value)) {
     return (
@@ -28,6 +38,16 @@ const email = (value) => {
 };
 
 const vusername = (value) => {
+  if (value.length < 3 || value.length > 20) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        The username must be between 3 and 20 characters.
+      </div>
+    );
+  }
+};
+
+const vuserlastname = (value) => {
   if (value.length < 3 || value.length > 20) {
     return (
       <div className="alert alert-danger" role="alert">
@@ -51,32 +71,53 @@ class Register extends Component {
   constructor(props) {
     super(props);
     this.handleRegister = this.handleRegister.bind(this);
+    this.onChangeUserid = this.onChangeUserid.bind(this);
     this.onChangeUsername = this.onChangeUsername.bind(this);
+    this.onChangeUserlastname = this.onChangeUserlastname.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
 
     this.state = {
-      username: "",
+      userid: "",
+      name: "",
+      lastname: "",
       email: "",
       password: "",
       successful: false,
     };
   }
 
+  onChangeUserid(e) {
+    this.setState({
+      ...this.state,
+      userid: e.target.value,
+    });
+  }
+
   onChangeUsername(e) {
     this.setState({
-      username: e.target.value,
+      ...this.state,
+      name: e.target.value,
+    });
+  }
+
+  onChangeUserlastname(e) {
+    this.setState({
+      ...this.state,
+      lastname: e.target.value,
     });
   }
 
   onChangeEmail(e) {
     this.setState({
+      ...this.state,
       email: e.target.value,
     });
   }
 
   onChangePassword(e) {
     this.setState({
+      ...this.state,
       password: e.target.value,
     });
   }
@@ -93,7 +134,7 @@ class Register extends Component {
     if (this.checkBtn.context._errors.length === 0) {
       this.props
         .dispatch(
-          register(this.state.username, this.state.email, this.state.password)
+          register(this.state.userid,this.state.name,this.state.lastname,this.state.email,this.state.password)
         )
         .then(() => {
           this.setState({
@@ -129,19 +170,43 @@ class Register extends Component {
             {!this.state.successful && (
               <div>
                 <div className="form-group">
+                  <label htmlFor="userid">UserId</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="userid"
+                    value={this.state.userid}
+                    onChange={this.onChangeUserid}
+                    validations={[required, vuserid]}
+                  />
+                </div>
+
+                <div className="form-group">
                   <label htmlFor="username">Username</label>
                   <Input
                     type="text"
                     className="form-control"
                     name="username"
-                    value={this.state.username}
+                    value={this.state.name}
                     onChange={this.onChangeUsername}
                     validations={[required, vusername]}
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="email">Email</label>
+                  <label htmlFor="userlastname">UserLastname</label>
+                  <Input
+                    type="text"
+                    className="form-control"
+                    name="username"
+                    value={this.state.lastname}
+                    onChange={this.onChangeUserlastname}
+                    validations={[required, vuserlastname]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Email</label>
                   <Input
                     type="text"
                     className="form-control"
@@ -153,7 +218,7 @@ class Register extends Component {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="password">Password</label>
+                  <label>Password</label>
                   <Input
                     type="password"
                     className="form-control"
