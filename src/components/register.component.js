@@ -130,10 +130,9 @@ class Register extends Component {
     });
 
     this.form.validateAll();
-
+    const { dispatch } = this.props;
     if (this.checkBtn.context._errors.length === 0) {
-      this.props
-        .dispatch(
+    dispatch(
           register(this.state.userid,this.state.name,this.state.lastname,this.state.email,this.state.password)
         )
         .then(() => {

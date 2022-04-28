@@ -22,7 +22,7 @@ class Profile extends Component {
 
   handleValidation(e) {
 
-    const { user: currentUser , message } = this.props;
+    const { user: currentUser} = this.props;
 
     this.setState({
       ...this.state,
