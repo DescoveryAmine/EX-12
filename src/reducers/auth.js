@@ -19,12 +19,12 @@ export default function (state = initialState, action) {
     case REGISTER_SUCCESS:
       return {
         ...state,
-        isLoggedIn: false,
+        isRegistred: false,
       };
     case REGISTER_FAIL:
       return {
         ...state,
-        isLoggedIn: false,
+        isRegistred: false,
       };
     case LOGIN_SUCCESS:
       return {

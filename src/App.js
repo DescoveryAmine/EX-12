@@ -15,7 +15,6 @@ import { clearMessage } from "./actions/message";
 
 import { history } from './helpers/history';
 
-// import AuthVerify from "./common/auth-verify";
 import EventBus from "./common/EventBus";
 
 class App extends Component {
